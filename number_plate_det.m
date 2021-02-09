@@ -79,7 +79,35 @@ error('Bildausgabe: ''%s'' nicht valid, bitte Bild prüfen.', final_output)
 end
 final_output = insertAfter(final_output,2,' ');
 
+% Output TXT
+%{
 file = fopen('number_Plate.txt', 'wt');
     fprintf(file,'%s\n',final_output);
     fclose(file);                     
     winopen('number_Plate.txt')
+ %}
+
+% Output JSON 
+format shortg
+
+jsonoutput = final_output;
+jsonsplit = strsplit(jsonoutput);
+canton = jsonsplit(1);
+number = jsonsplit(2);
+date = datetime;
+
+str = jsonencode(table(date,canton,number));
+
+% JSON Formatting
+str = strrep(str, ',"', sprintf(',\r"'));
+str = strrep(str, '[{', sprintf('[\r{\r'));
+str = strrep(str, '}]', sprintf('\r}\r]'));
+
+fid1 = fopen('Daten1.json', 'a');
+
+if fid1 == -1, error('Cannot create JSON file');
+end
+
+fwrite(fid1, str, 'char');
+
+fclose(fid1);
