@@ -1,26 +1,42 @@
-% Parst Bild durch und speichert die Erkennten Zeichen gleich ab
+%{
+    License Plate Recogniton
 
-% clearen
+    - This file is used to extract characters from a image, Invert them
+    into two-dimensional Images and store the output to feed the training
+    file
+    
+
+    Forked from: https://ch.mathworks.com/matlabcentral/fileexchange/54456-licence-plate-recognition
+
+    Author: Nicola Wipfli, Maurus Michel, Yannick Gerber
+    License: MIT
+    Copyright: 2021 Nicola Wipfli, Maurus Michel, Yannick Gerber
+    
+    Required Dependencies: None
+    Optional Dependencies: None
+%}
+
+% clear
 clc
 close all;
 clear;
 
-%Laden der Trainingsdatei
+%load trainingfile (this file is our reference for the image detection)
 load imgfildata;
 
-% Prompt für Fileauswahl
+% prompt for picture to scan
 [file,path]=uigetfile({'*.jpg;*.bmp;*.png;*.tif'},'Choose an image');
 s=[path,file];
 picture=imread(s);
 [~,cc]=size(picture);
 picture=imresize(picture,[240 500]);
 
-%RGB Image in Grayscale verwandeln
+%RGB image is transformed into greyscale image
 if size(picture,3)==3
   picture=rgb2gray(picture);
 end
 
-%Zeichen Erkennung
+%character detection
 threshold = graythresh(picture);
 picture =~im2bw(picture,threshold);
 picture = bwareaopen(picture,24);
@@ -36,7 +52,8 @@ figure,imshow(picture2)
 picture2=bwareaopen(picture2,20);
 figure,imshow(picture2)
 
-%Markierung der Zeichen mit grüner Umrandung (BoundingBox)
+
+%bounding box
 [L,Ne]=bwlabel(picture2);
 propied=regionprops(L,'BoundingBox');
 hold on
@@ -50,7 +67,7 @@ figure
 final_output=[];
 t=[];
 
-%Image Resize auf 24x42px
+%image resize to 24x42 px
 kb=1;
 for n=1:Ne
     
@@ -64,8 +81,7 @@ for n=1:Ne
 
 totalLetters=size(imgfile,2);
 
-%Speicherung der erkannten Zeichen als .tif / .bmp / .png / .jpeg
-%Filename wird inkrementiert
+% saves all the detected characters to individual files.
 
 baseFileName='bildli'; 
     baseFileName=[baseFileName,num2str(kb),'.tif']
@@ -80,8 +96,9 @@ baseFileName='bildli';
   
  end
  
-% Einstellung der Erkennungsgenauigkeit.
-% 1 > Korrelation > 0 
+% Use to define the accuracy from image to reference file
+% define max(x)>.5 as you preffer
+% 1 > correlation > 0 
 
  t=[t max(x)];
  if max(x)>.45
