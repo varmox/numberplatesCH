@@ -84,13 +84,33 @@ end
 end
 
 
-% Validierung auf gültige Kombination des Kantonskürzels
+%Error Handling
+%-----------------
 
+%Check Canton
 options = ["ZH", "BE","LU", "UR","SZ", "OW","NW", "GL","ZG", "FR","SO", "BS","BL", "SH","AI", "AR","SG", "GR","AG","TG","TI","VD","VS","NE","GE","JU"];  
 if ~any(strcmpi(final_output(1:2), options))
-error('Bildausgabe: ''%s'' nicht valid, bitte Bild prüfen.', final_output)
+f = msgbox(sprintf('Nummernschild: %s nicht valid, bitte Bild prüfen. (Fehler Kanton)', final_output), 'Fehler','error');
+error('Nummernschild: ''%s'' nicht valid, bitte Bild prüfen. (Fehler Kanton)', final_output)
 end
+
+%Check Number
+letter_in_number( regexp(final_output(3:end),['[A-Z,a-z]']) ) = true
+summe = sum(letter_in_number(:))
+if summe >= 1
+f = msgbox(sprintf('Nummernschild: %s nicht valid, bitte Bild prüfen. (Fehler Nummer)', final_output), 'Fehler','error');
+error('Nummernschild: ''%s'' nicht valid, bitte Bild prüfen. (Fehler Nummer)', final_output)
+end
+
+%Final output sequence
+%-----------------
+
+%Write output with space after error check
 final_output = insertAfter(final_output,2,' ');
+
+%Display message box with the correct numberplate
+f = msgbox(sprintf('Nummernschild: %s', final_output), 'Nummernschild','help');
+
 
 % Output TXT
 %{
