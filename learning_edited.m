@@ -1,22 +1,26 @@
+% Parst Bild durch und speichert die Erkennten Zeichen gleich ab
 
+% clearen
 clc
 close all;
 clear;
+
+%Laden der Trainingsdatei
 load imgfildata;
 
+% Prompt für Fileauswahl
 [file,path]=uigetfile({'*.jpg;*.bmp;*.png;*.tif'},'Choose an image');
 s=[path,file];
 picture=imread(s);
 [~,cc]=size(picture);
 picture=imresize(picture,[240 500]);
 
+%RGB Image in Grayscale verwandeln
 if size(picture,3)==3
   picture=rgb2gray(picture);
 end
-% se=strel('rectangle',[5,5]);
-% a=imerode(picture,se);
-% figure,imshow(a);
-% b=imdilate(a,se);
+
+%Zeichen Erkennung
 threshold = graythresh(picture);
 picture =~im2bw(picture,threshold);
 picture = bwareaopen(picture,24);
@@ -32,6 +36,7 @@ figure,imshow(picture2)
 picture2=bwareaopen(picture2,20);
 figure,imshow(picture2)
 
+%Markierung der Zeichen mit grüner Umrandung (BoundingBox)
 [L,Ne]=bwlabel(picture2);
 propied=regionprops(L,'BoundingBox');
 hold on
@@ -45,6 +50,7 @@ figure
 final_output=[];
 t=[];
 
+%Image Resize auf 24x42px
 kb=1;
 for n=1:Ne
     
@@ -58,6 +64,8 @@ for n=1:Ne
 
 totalLetters=size(imgfile,2);
 
+%Speicherung der erkannten Zeichen als .tif / .bmp / .png / .jpeg
+%Filename wird inkrementiert
 
 baseFileName='bildli'; 
     baseFileName=[baseFileName,num2str(kb),'.tif']
@@ -71,6 +79,9 @@ baseFileName='bildli';
     x=[x y];
   
  end
+ 
+% Einstellung der Erkennungsgenauigkeit.
+% 1 > Korrelation > 0 
 
  t=[t max(x)];
  if max(x)>.45
@@ -81,7 +92,3 @@ final_output=[final_output out];
 end
 end
 
-file = fopen('number_Plate.txt', 'wt');
-    fprintf(file,'%s\n',final_output);
-    fclose(file);                     
-    winopen('number_Plate.txt')

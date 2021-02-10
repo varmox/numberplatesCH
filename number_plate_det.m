@@ -1,37 +1,45 @@
+% License Plate Recognition mit MATLAB auf CH-Kennzeichen
 
+%clearen
 clc
 close all;
 clear;
+%Laden der Trainingsdatei
 load imgfildata;
 
+
+% Prompt für Fileauswahl
 [file,path]=uigetfile({'*.jpg;*.jpeg;*.bmp;*.png;*.tif'},'Choose an image');
 s=[path,file];
 picture=imread(s);
 [~,cc]=size(picture);
 picture=imresize(picture,[240 500]);
 
+%RGB Image in Grayscale verwandeln
 if size(picture,3)==3
   picture=rgb2gray(picture);
 end
-% se=strel('rectangle',[5,5]);
-% a=imerode(picture,se);
-% figure,imshow(a);
-% b=imdilate(a,se);
+
+%Zeichen Erkennung
 threshold = graythresh(picture);
 picture =~im2bw(picture,threshold);
 picture = bwareaopen(picture,24);
 imshow(picture)
+
 if cc>2000
     picture1=bwareaopen(picture,7500);
 else
-picture1=bwareaopen(picture,5000);
+    
+    picture1=bwareaopen(picture,5000);
 end
+
 figure,imshow(picture1)
 picture2=picture-picture1;
 figure,imshow(picture2)
 picture2=bwareaopen(picture2,20);
 figure,imshow(picture2)
 
+%Markierung der Zeichen mit grüner Umrandung (BoundingBox)
 [L,Ne]=bwlabel(picture2);
 propied=regionprops(L,'BoundingBox');
 hold on
@@ -44,6 +52,9 @@ hold off
 figure
 final_output=[];
 t=[];
+
+%Imageresize auf 24x42 Px
+
 for n=1:Ne
   [r,c] = find(L==n);
   n1=picture(min(r):max(r),min(c):max(c));
@@ -55,23 +66,25 @@ for n=1:Ne
 totalLetters=size(imgfile,2);
 
  for k=1:totalLetters
-    
     y=corr2(imgfile{1,k},n1);
     x=[x y];
-    
  end
- t=[t max(x)];
- if max(x)>.5
+ 
+% Einstellung der Erkennungsgenauigkeit.
+% 1 > Korrelation > 0 
+
+t=[t max(x)];
+
+if max(x)>.5
  z=find(x==max(x));
  out=cell2mat(imgfile(2,z));
-
-final_output=[final_output out];
-end
+ final_output=[final_output out];
 end
 
-%String kontrolle / Error Handling
- 
+end
 
+
+% Validierung auf gültige Kombination des Kantonskürzels
 
 options = ["ZH", "BE","LU", "UR","SZ", "OW","NW", "GL","ZG", "FR","SO", "BS","BL", "SH","AI", "AR","SG", "GR","AG","TG","TI","VD","VS","NE","GE","JU"];  
 if ~any(strcmpi(final_output(1:2), options))
@@ -103,6 +116,7 @@ str = strrep(str, ',"', sprintf(',\r"'));
 str = strrep(str, '[{', sprintf('[\r{\r'));
 str = strrep(str, '}]', sprintf('\r}\r]'));
 
+% Schreiben der JSON Datei
 fid1 = fopen('Daten1.json', 'a');
 
 if fid1 == -1, error('Cannot create JSON file');
