@@ -155,8 +155,11 @@ str = strrep(str, '[{', sprintf('[\r{\r'));
 str = strrep(str, '}]', sprintf('\r}\r]'));
 str = strrep(str, ',"', sprintf(',\r"'));
 
+%delete old json file
+delete 'C:\inetpub\LPR\out\out.json'
+
 % writing the JSON file
-fid1 = fopen('out.json', 'a');
+fid1 = fopen('C:\inetpub\LPR\out\out.json', 'a');
 
 if fid1 == -1, error('Cannot create JSON file');
 end
@@ -164,3 +167,4 @@ end
 fwrite(fid1, str, 'char');
 
 fclose(fid1);
+
