@@ -1,6 +1,6 @@
 % License Plate Recognition mit MATLAB auf CH-Kennzeichen
 
-%clearen
+%clear
 clc
 close all;
 clear;
