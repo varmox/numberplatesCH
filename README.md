@@ -12,7 +12,7 @@ If you want to train the algorithm to your needs you can do so. The reference fi
 Images have to be two dimensional to store them into 'imgfildata.mat'. You can use our script to detect characters and automatticaly invert them and store then to a path with the file extension you need. Look at 'learning_edited.m' for that.
 
 <hr>
-<b> Files </b>
+<strong> Files </strong>
 
 <i> number_plate_det.m </i> -> is the actual detection script <br>
 <i> imgfildata.mat </i> -> reference file with trained characters <br>
