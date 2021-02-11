@@ -4,7 +4,7 @@ Detections of Swiss car number plates
 Original Script by: https://mathworks.com/matlabcentral/fileexchange/54456-licence-plate-recognition
 
 This MATLAB Solution provides image detection of Swiss car number plates. The trainingfile can be trained to detect other images aswell. 
-<hr>
+
 
 
 <h2> Training </h2>
@@ -18,7 +18,7 @@ All data related to training is there. 'letters_numbers' folder is used for a re
 Make sure your images are inverted and only contain black and white (0 and 1). Also the size must be 24x42px (can be adjusted). <br>
 The filename is used to write the desired letter into the 'imgfildata.mat' file. If you name the file 'L' that means that the file named 'L' is your reference for a 'L'. <br>
 
-<hr>
+
 <h2> Files </h2>
 
 <i> number_plate_det.m </i> -> is the actual detection script <br>
@@ -31,7 +31,6 @@ The filename is used to write the desired letter into the 'imgfildata.mat' file.
 <h3> "Kennzeichen" Folder </h3>
 You'll find some sample files there.
 
-<hr>
 
 <h2> Compile with MATLAB MCC </h2>
 If you want to use the project as an executable you can compile it yourself with mcc. Run the following in matlab <br>
