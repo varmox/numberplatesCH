@@ -15,3 +15,6 @@ Images have to be two dimensional to store them into 'imgfildata.mat'. You can u
 <b> Files </b>
 
 number_plate_det.m -> is the actual detection script
+imgfildata.mat -> reference file with trained characters
+training_imgfildata.m -> script to write into imgfildata.mat
+learning_edited.m -> script to parse all characters from an image, invert them and store them individually
