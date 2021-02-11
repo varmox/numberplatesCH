@@ -31,7 +31,7 @@ picture=imread(s);
 [~,cc]=size(picture);
 picture=imresize(picture,[240 500]);
 
-%RGB image is transformed into greyscale image
+RGB image is transformed into greyscale image
 if size(picture,3)==3
   picture=rgb2gray(picture);
 end
@@ -138,6 +138,7 @@ file = fopen('number_Plate.txt', 'wt');
     winopen('number_Plate.txt')
  %}
 
+
 % output to JSON file
 format shortg
 
@@ -150,16 +151,14 @@ date = datetime;
 str = jsonencode(table(date,canton,number));
 
 % make JSON pretty :)
-str = strrep(str, ',"', sprintf(',\r"'));
-str = strrep(str, '[{', sprintf('[\r{\r'));
-str = strrep(str, '}]', sprintf('\r}\r]'));
-str = strrep(str, ',"', sprintf(',\r"'));
+str = strrep(str,'[','');
+str = strrep(str,']','');
 
 %delete old json file
-delete 'C:\inetpub\LPR\out\out.json'
+delete 'C:\out\out.json'
 
 % writing the JSON file
-fid1 = fopen('C:\inetpub\LPR\out\out.json', 'a');
+fid1 = fopen('C:\out\out.json', 'a');
 
 if fid1 == -1, error('Cannot create JSON file');
 end
@@ -167,4 +166,3 @@ end
 fwrite(fid1, str, 'char');
 
 fclose(fid1);
-
