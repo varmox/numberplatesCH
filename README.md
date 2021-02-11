@@ -19,7 +19,7 @@ Images have to be two dimensional to store them into 'imgfildata.mat'. You can u
 <i> Training\training_imgfildata.m </i>-> script to write into imgfildata.mat <br>
 <i> learning_edited.m </i> -> script to parse all characters from an image, invert them and store them individually 
 
-<b> Training Folder </b>
+<h3> Training Folder </h3>
 All data related to training is there. 'letters_numbers' folder is used for a reference when executing 'training_imgfildata.m' <br>
 Make sure your images are inverted and only contain black and white (0 and 1). Also the size msut be 24x42px (can be adjusted). <br>
 The filename is used to write the desired letter into the 'imgfildata.mat' file. If you name the file 'L' that means that the file named 'L' is your reference for a 'L'.
