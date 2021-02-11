@@ -26,5 +26,5 @@ The filename is used to write the desired letter into the 'imgfildata.mat' file.
 
 
 
-<b> Kennzeichen Folder </b>
+<h3> Kennzeichen Folder </h3>
 You'll find some sample files there
