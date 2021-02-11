@@ -31,6 +31,6 @@ You'll find some sample files there
 
 <hr>
 
-<h2> Compile with MATLAB MCC <h2>
+<h2> Compile with MATLAB MCC </h2>
 If you want to use the project as an executable you can compile it yourself with mcc. Run the following in matlab
   <code> mcc -m -I 'C:\matlab source\compiled' -d 'C:\matlab source\exe' number_plate_det.m </code>
